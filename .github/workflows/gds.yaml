@@ -20,10 +20,12 @@ jobs:
 
   precheck:
     needs: gds
-    # GitHub-hosted: precheck installs its own (single-user) nix, which conflicts
-    # with this self-hosted machine's root-owned multi-user nix. gds/gl_test/viewer
-    # stay on the local runner.
-    runs-on: ubuntu-24.04
+    # Run on the local runner but inside a clean container: precheck installs its
+    # own single-user nix, which collides with this host's root-owned multi-user
+    # nix when run bare. A fresh container has no pre-existing /nix, so the nix
+    # install works like it does on GitHub-hosted — keeping precheck on this machine.
+    runs-on: self-hosted
+    container: ubuntu:24.04
     steps:
       - name: Run Tiny Tapeout Precheck
         uses: TinyTapeout/tt-gds-action/precheck@ttsky26c
