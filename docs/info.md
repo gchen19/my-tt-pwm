@@ -1,20 +1,28 @@
-<!---
-
-This file is used to generate your project datasheet. Please fill in the information below and delete any unused
-sections.
-
-You can also include images in this folder and reference them in the markdown. Each image must be less than
-512 kb in size, and the combined size of all images must be less than 1 MB.
--->
+# tt_um_tapewright_pwm
 
 ## How it works
 
-Explain how your project works
+An 8-bit PWM peripheral. A free-running 8-bit counter increments every clock; the
+output `pwm_out` is high while `counter < ui_in`, so the duty cycle over each
+256-cycle period equals `ui_in / 256`. The upper counter bits are exposed for
+observation.
 
 ## How to test
 
-Explain how to use your project
+Drive `ui_in` with a duty value (0–255). `uo_out[0]` is the PWM waveform; its
+high-time fraction equals `ui_in/256`. `uo_out[7:1]` mirror `counter[7:1]`.
+A cocotb testbench (`test/test_pwm.py`) checks the duty for several setpoints.
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+None required. Scope `uo_out[0]` to see the PWM, or low-pass filter it to an
+analog level proportional to `ui_in`.
+
+## Pinout
+
+| Bus | Bit | Function |
+|---|---|---|
+| ui_in | [7:0] | duty-cycle setpoint |
+| uo_out | 0 | pwm_out |
+| uo_out | [7:1] | counter[7:1] |
+| uio | — | unused |

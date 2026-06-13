@@ -1,12 +1,16 @@
-# Makefile
-# See https://docs.cocotb.org/en/stable/quickstart.html for more info
+# Makefile — Tiny Tapeout cocotb harness for tt_um_tapewright_pwm.
+# See https://docs.cocotb.org/en/stable/quickstart.html for more info.
+#
+# RTL sim:          make
+# Gate-level sim:   make GATES=yes   (tt-gds-action's gl_test job; needs the
+#                   hardened netlist copied in as gate_level_netlist.v)
 
 # defaults
 SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+PROJECT_SOURCES = tt_um_tapewright_pwm.v
 
 ifneq ($(GATES),yes)
 

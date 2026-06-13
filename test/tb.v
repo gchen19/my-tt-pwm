@@ -3,6 +3,10 @@
 
 /* This testbench just instantiates the module and makes some convenient wires
    that can be driven / tested by the cocotb test.py.
+
+   The cocotb test attaches to this `tb` wrapper (not the design directly) so the
+   same test runs against RTL (`make`) and the hardened gate-level netlist
+   (`make GATES=yes`, used by tt-gds-action's gl_test job).
 */
 module tb ();
 
@@ -27,8 +31,8 @@ module tb ();
   wire VGND = 1'b0;
 `endif
 
-  // Replace tt_um_example with your module name:
-  tt_um_example user_project (
+  // PWM design under test:
+  tt_um_tapewright_pwm user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
