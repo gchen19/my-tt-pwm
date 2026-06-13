@@ -20,12 +20,12 @@ jobs:
 
   precheck:
     needs: gds
-    # Run on the local runner but inside a clean container: precheck installs its
-    # own single-user nix, which collides with this host's root-owned multi-user
-    # nix when run bare. A fresh container has no pre-existing /nix, so the nix
-    # install works like it does on GitHub-hosted — keeping precheck on this machine.
+    # Run on the local runner but inside a container that mirrors the GitHub-hosted
+    # image (catthehacker/act). A fresh container has no pre-existing /nix so the nix
+    # install works, and the act image ships the tools the action assumes (jq, git,
+    # curl, sudo, ...) — bare ubuntu:24.04 lacks them. Keeps precheck on this machine.
     runs-on: self-hosted
-    container: ubuntu:24.04
+    container: catthehacker/ubuntu:act-24.04
     steps:
       - name: Run Tiny Tapeout Precheck
         uses: TinyTapeout/tt-gds-action/precheck@ttsky26c
