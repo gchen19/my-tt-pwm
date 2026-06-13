@@ -20,7 +20,10 @@ jobs:
 
   precheck:
     needs: gds
-    runs-on: self-hosted
+    # GitHub-hosted: precheck installs its own (single-user) nix, which conflicts
+    # with this self-hosted machine's root-owned multi-user nix. gds/gl_test/viewer
+    # stay on the local runner.
+    runs-on: ubuntu-24.04
     steps:
       - name: Run Tiny Tapeout Precheck
         uses: TinyTapeout/tt-gds-action/precheck@ttsky26c
