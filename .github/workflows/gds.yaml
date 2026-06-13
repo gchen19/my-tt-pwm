@@ -29,6 +29,12 @@ jobs:
     steps:
       - name: Run Tiny Tapeout Precheck
         uses: TinyTapeout/tt-gds-action/precheck@ttsky26c
+      # The container runs as root and writes root-owned files into the shared
+      # self-hosted _work dir, which then breaks the host-side gds/gl_test checkout
+      # on later runs. Restore ownership to the runner user (uid 1000) on exit.
+      - name: Restore workspace ownership
+        if: always()
+        run: chown -R 1000:1000 "$GITHUB_WORKSPACE" || true
 
   gl_test:
     needs: gds
