@@ -11,7 +11,8 @@ observation.
 
 Drive `ui_in` with a duty value (0–255). `uo_out[0]` is the PWM waveform; its
 high-time fraction equals `ui_in/256`. `uo_out[7:1]` mirror `counter[7:1]`.
-A cocotb testbench (`test/test_pwm.py`) checks the duty for several setpoints.
+A cocotb testbench (`test/test.py`) checks the duty for several setpoints, and the
+`gl_test` job re-runs it against the hardened gate-level netlist.
 
 ## External hardware
 
