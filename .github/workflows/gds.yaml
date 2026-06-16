@@ -4,9 +4,12 @@ on:
   push:
   workflow_dispatch:
 
+# Whole gate on GitHub-hosted (stock) runners — the Tiny Tapeout default. Confirms
+# the tt_um_tapewright_pwm gate (gds / precheck / gl_test / viewer) on stock infra
+# (TapeWright backlog Arc 1). The previous self-hosted-runner variant is in git history.
 jobs:
   gds:
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     steps:
       - name: checkout repo
         uses: actions/checkout@v6
@@ -20,12 +23,6 @@ jobs:
 
   precheck:
     needs: gds
-    # precheck is tightly coupled to the exact GitHub-hosted image: containerizing
-    # it on the self-hosted runner was whack-a-mole (bare ubuntu:24.04 lacks jq; the
-    # catthehacker/act image disables pip cache and breaks setup-python's cache:pip;
-    # nix-build's sandbox needs user namespaces; and a root container pollutes the
-    # shared _work). It's a lightweight check, so run just this one job on
-    # GitHub-hosted; gds/gl_test/viewer (the heavy silicon work) stay on the local runner.
     runs-on: ubuntu-24.04
     steps:
       - name: Run Tiny Tapeout Precheck
@@ -33,7 +30,7 @@ jobs:
 
   gl_test:
     needs: gds
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     steps:
       - name: checkout repo
         uses: actions/checkout@v6
@@ -45,7 +42,7 @@ jobs:
 
   viewer:
     needs: gds
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     permissions:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
